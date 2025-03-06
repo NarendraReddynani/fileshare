@@ -1,3 +1,4 @@
+import { X } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
@@ -8,7 +9,7 @@ function FilePreview({file,removeFile}) {
         <Image src='file.svg' width={50} height={50} alt='file logo'/>
         <div className='text-left'>
             <h2>{file.name}</h2>
-            <h2 className='text-[12px] text-gray-400'>{file.type}/{(file.size/1024/1024).toFixed(2)}MB</h2>
+            <h2 className='text-[15px] text-grey'>{file.type}/{(file.size/1024/1024).toFixed(2)}MB</h2>
             
         </div>
         </div>

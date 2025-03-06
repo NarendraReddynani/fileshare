@@ -1,26 +1,44 @@
-import React, { useState } from 'react';
-import AlertMessage from '../_components/AlertMessage'
-import FilePreview from '../_components/FilePreview'
+import React, { useState, useEffect } from 'react';
+import AlertMessage from './AlertMessage';
+import FilePreview from './FilePreview';
+import ProgressBar from './ProgressBar';
 
-function UploadForm() {
+function UploadForm({ uploadBtnClick,progress }) {
   const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
+  // Handle file selection and validation
   const onFileUpload = (file) => {
     if (!file) {
       setErrorMessage('No file selected');
       return;
     }
-    console.log(file)
+
+    console.log('Selected file:', file);
 
     if (file.size > 2000000) { // 2MB limit
       setErrorMessage('Size of file is more than 2MB');
       setFile(null);
       return;
     }
-    
+
     setErrorMessage(null);
     setFile(file);
+  };
+
+  // Debug file state changes
+  useEffect(() => {
+    console.log('Current file state:', file);
+  }, [file]);
+
+  // Handle button click and pass file to parent function
+  const handleUploadClick = () => {
+    if (!file) {
+      console.error('No file to upload');
+      return;
+    }
+    console.log('Uploading file:', file);
+    uploadBtnClick(file);
   };
 
   return (
@@ -65,14 +83,16 @@ function UploadForm() {
       </div>
 
       {errorMessage && <AlertMessage msg={errorMessage} />}
-      {file?<FilePreview file={file} removeFile={()=>setFile(null)}/>:null}
+      {file && <FilePreview file={file} removeFile={() => setFile(null)} />}
 
-      <button
+      
+      {progress>=0?<ProgressBar progress={progress}/>:<button
         disabled={!file}
         className="p-2 bg-green-500 text-white w-[30%] rounded-full mt-5 hover:bg-green-400 disabled:bg-gray-300"
+        onClick={handleUploadClick}
       >
         Upload
-      </button>
+      </button>}
     </div>
   );
 }
