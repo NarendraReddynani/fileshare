@@ -1,30 +1,14 @@
 "use client";
-
 import { File, Shield, Upload } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
 
-function SideNav() {
+function SideNav({ closeSideBar }) {
   const menuList = [
-    {
-      id: 1,
-      name: "Upload",
-      icon: Upload,
-      path: "/upload",
-    },
-    {
-      id: 2,
-      name: "Files",
-      icon: File,
-      path: "/files",
-    },
-    {
-      id: 3,
-      name: "Upgrade",
-      icon: Shield,
-      path: "/upgrade",
-    },
+    { id: 1, name: "Upload", icon: Upload, path: "/upload" },
+    { id: 2, name: "Files", icon: File, path: "/files" },
+    { id: 3, name: "Upgrade", icon: Shield, path: "/upgrade" },
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -41,7 +25,10 @@ function SideNav() {
               className={`flex items-center gap-2 p-4 w-full text-left hover:bg-gray-100 ${
                 activeIndex === index ? "bg-blue-50 text-sky-500" : "text-dark"
               }`}
-              onClick={() => setActiveIndex(index)}
+              onClick={() => {
+                setActiveIndex(index);
+                closeSideBar(); // Call closeSidebar as a function
+              }}
             >
               <item.icon className="w-5 h-5" />
               <h2>{item.name}</h2>
